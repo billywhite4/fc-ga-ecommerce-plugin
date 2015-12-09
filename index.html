@@ -1,0 +1,126 @@
+<html>
+	<head>
+		<!-- Example FoxyCart Transaction JSON in Receipt template (FoxyCart v0.7.1) -->
+		<script type="text/javascript" src="js/fc_json.js"></script>
+	</head>
+	<body>
+		<!-- Example HTML from FoxyCart Receipt template, output may vary -->
+		<ol id="fc_receipt_order_list">
+			<li class="fc_row fc_order_id">
+				<span class="fc_pre">Order ID<span class="fc_colon">:</span></span>
+				<span class="fc_text">922286528</span>
+			</li>			<li class="fc_row fc_order_subtotal">
+				<span class="fc_pre">Subtotal<span class="fc_colon">:</span></span>
+				<span class="fc_text">USD 3.00</span>
+			</li>			<li class="fc_row fc_order_shipping">
+				<span class="fc_pre">Shipping<span class="fc_colon">:</span></span>
+				<span class="fc_text">USD 6.10</span>
+			</li>			<li class="fc_row fc_order_tax">
+				<span class="fc_pre">Tax<span class="fc_colon">:</span></span>
+				<span class="fc_text">USD 0.28</span>
+			</li>			<li class="fc_row fc_order_total">
+				<span class="fc_pre">Order Total<span class="fc_colon">:</span></span>
+				<span class="fc_text">USD 9.38</span>
+			</li>
+		</ol>
+		
+
+		<script type="text/javascript">
+			// Based on GA setup for tracking Goal conversions with FoxyCart subdomain: https://wiki.foxycart.com/integration/googleanalytics_universal
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+				ga('create', 'UA-XXXXXXXX-X', 'auto', {
+					'clientId': fc_json.custom_fields['ga'],
+					'storage': 'none'
+				});
+				var pageview = "/receipt";
+				if (typeof(fc_json.custom_fields['_fcpm']) != "undefined" && fc_json.custom_fields['_fcpm'] != "") {
+					var fcpm = fc_json.custom_fields['_fcpm'].split("|");
+					if (fcpm[0] != "plastic" && fcpm[0] != "purchase_order") {
+					pageview += "_" + fcpm[0] + "_from_" + fcpm[1];
+				}
+			}
+			ga('set', 'page', pageview);
+			ga('send', 'pageview');
+
+
+			// find transaction values from FoxyCart Receipt HTML
+			function fcTextStripper(fcParamName) {
+				var transBlock = document.getElementsByClassName("fc_order_"+fcParamName);	
+				var transBlockLength = transBlock[0].childNodes.length;	
+				var trans = '';	
+				for (var i = 0; i < transBlockLength; i++) {
+					if (transBlock[0].childNodes[i].className == "fc_text") {
+						transChildNodes = transBlock[0].childNodes[i];
+						transInnerHTML = transChildNodes.innerHTML;
+						trans = stripUSD(transInnerHTML);
+						break;
+					}
+				}
+				return trans;
+			}
+
+			// strip USD of any number values in transaction
+			function stripUSD(str) {
+				return str.replace('USD ','');
+			}
+	
+			// assign GA vars values from FC Receipt HTML
+			var transAffiliation = 'Kermit Chair'; // store name
+			var transId = fcTextStripper("id");
+			var transSubtotal = fcTextStripper("subtotal");
+			var transShipping	= fcTextStripper("shipping");
+			var transTax	= fcTextStripper("tax");
+			var transTotal	= fcTextStripper("total");
+
+			// variable for building Google Analytics transaction to send to Ecommerce plugin: https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce	
+			var gaTransHtml = '';
+			gaTransHtml += "ga('ecommerce:addTransaction', {";
+			gaTransHtml += "'id':'"+transId+"',";
+			gaTransHtml += "'affiliation':'"+transAffiliation+"',";
+			gaTransHtml += "'revenue':'"+transTotal+"',";
+			gaTransHtml += "'shipping':'"+transShipping+"',";
+			gaTransHtml += "'tax':'"+transTax+"',";
+			gaTransHtml += "'currency':'USD'";
+			gaTransHtml += "});\n";
+
+			console.log(gaTransHtml);
+
+			var fcProducts = fc_json['products']; // products data from fc_json passed by FoxyCart in receipt page
+
+			var gaItemHtml = ''; // empty variable for building Google Analytics items to send to Ecommerce plugin
+
+			// loop through all items in cart
+			for (i = 0; i < fcProducts.length; i++) {
+				var fcProduct = fcProducts[i];
+		
+				gaItemHtml += "ga('ecommerce:addItem', {";
+		
+				gaItemHtml += "'id':'"+transId+"',";
+				gaItemHtml += "'name':'"+fcProduct.name+"',";
+				gaItemHtml += "'sku':'"+fcProduct.code+"',";
+				gaItemHtml += "'category':'"+fcProduct.category+"',";
+				gaItemHtml += "'price':'"+fcProduct.price_each+"',";
+				gaItemHtml += "'quantity':'"+fcProduct.quantity+"',";
+				gaItemHtml += "'currency':'USD'";
+		
+				gaItemHtml += "});\n";
+			}
+	
+			console.log(gaItemHtml);
+
+			// write GA Ecommerce commands to new script tag
+			document.write("<!-- Google Analytics ECommerce Plugin Data -->");
+			document.write('<script type="text/javascript">');
+			document.write("ga('require', 'ecommerce');\n");
+			document.write(gaTransHtml);
+			document.write(gaItemHtml);
+			document.write("ga('ecommerce:send');\n");
+			document.write('\x3C/script>');
+
+		</script>
+	</body>
+</html>
