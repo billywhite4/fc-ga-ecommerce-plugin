@@ -6,7 +6,7 @@ In early versions of FoxyCart, `fc_json` does not pass data for the entire trans
 #Dependencies
 This specific example is for a FoxyCart 0.7.1 store on an FC subdomain like yourstore.foxycart.com, but it should still work on any pre-v2.0 store with light modification. Instructions may vary for custom subdomains like yourstore.yourdomain.com.
 
-A prerequisite for this to work is setting up your Google Analytics Goal Conversions and turning on the Ecommerce plugin based on the detailed instructions here on the FoxyCart wiki:
+A prerequisite for this to work is setting up your Google Analytics Goal Conversions and turning on the Ecommerce plugin based on the detailed instructions on the FoxyCart wiki:
 https://wiki.foxycart.com/integration/googleanalytics_universal
 
 Those instructions obviously also require Google Analytics Universal Analytics (analytics.js).
@@ -25,10 +25,10 @@ var transTotal = stripUSD($('.fc_order_total').find('.fc_text').html()); // tran
 ```
 
 #Notes
-**Important!** This should only be applied to the FoxyCart `/receipt` page. Adding this script to any other FoxyCart page will muck up your analytics as fc_json is present on all FC pages and passing data to the Ecommerce plugin before a purchase is completed will create a big mess in your analytics.
+**Important!** This should only be applied to the FoxyCart `/receipt` page. Adding this script to any other FoxyCart page will muck up your analytics as `fc_json` is present on all FC pages and passing data to the Ecommerce plugin before a purchase is completed will create a big mess in your analytics.
 
 This setup is for USD currency, but the `stripUSD()` function could be altered or extended to strip the prefixes of other currencies.
 
-Categories in `fc_json` are the Shipping/Discount category set in FoxyCart, and are not necessarily taxonomic categories set in a CMS for grouping products for analysis. This should be considered if your FC categories are different than your product categories.
+Categories in `fc_json` are the Shipping/Discount category set in FoxyCart, and are not necessarily taxonomic categories set in a CMS for grouping products for analysis. What's passed to the category field should be considered and likely altered if your FC categories are different than your product categories.
 
 New installations of FoxyCart using 2.0 or higher should use the built-in [Google Analytics integration](https://wiki.foxycart.com/v/2.0/analytics).

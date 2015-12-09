@@ -69,12 +69,12 @@
 			}
 	
 			// assign GA vars values from FC Receipt HTML
-			var transAffiliation = 'Store Name'; // store name
-			var transId = fcTextStripper("id");
-			var transSubtotal = fcTextStripper("subtotal");
-			var transShipping	= fcTextStripper("shipping");
-			var transTax	= fcTextStripper("tax");
-			var transTotal	= fcTextStripper("total");
+			var transAffiliation 	= 'Store Name'; // store name
+			var transId 			= fcTextStripper("id");
+			var transSubtotal 		= fcTextStripper("subtotal");
+			var transShipping		= fcTextStripper("shipping");
+			var transTax			= fcTextStripper("tax");
+			var transTotal			= fcTextStripper("total");
 
 			// variable for building Google Analytics transaction to send to Ecommerce plugin: https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce	
 			var gaTransHtml = '';
@@ -87,13 +87,13 @@
 			gaTransHtml += "'currency':'USD'";
 			gaTransHtml += "});\n";
 
-			console.log(gaTransHtml);
+			console.log(gaTransHtml); // print gaTransHtml to console to confirm data to be sent to GA
 
 			var fcProducts = fc_json['products']; // products data from fc_json passed by FoxyCart in receipt page
 
-			var gaItemHtml = ''; // empty variable for building Google Analytics items to send to Ecommerce plugin
+			var gaItemHtml = ''; // variable for building Google Analytics product items to send to Ecommerce plugin
 
-			// loop through all items in cart
+			// loop through all items in cart to build gaItemHtml
 			for (i = 0; i < fcProducts.length; i++) {
 				var fcProduct = fcProducts[i];
 		
@@ -110,7 +110,7 @@
 				gaItemHtml += "});\n";
 			}
 	
-			console.log(gaItemHtml);
+			console.log(gaItemHtml); // print gaItemHtml to console to confirm data to be sent to GA
 
 			// write GA Ecommerce commands to new script tag
 			document.write("<!-- Google Analytics ECommerce Plugin Data -->");
