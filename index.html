@@ -78,14 +78,20 @@
 
 			// variable for building Google Analytics transaction to send to Ecommerce plugin: https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce	
 			var gaTransHtml = '';
-			gaTransHtml += "ga('ecommerce:addTransaction', {";
-			gaTransHtml += "'id':'"+transId+"',";
-			gaTransHtml += "'affiliation':'"+transAffiliation+"',";
-			gaTransHtml += "'revenue':'"+transTotal+"',";
-			gaTransHtml += "'shipping':'"+transShipping+"',";
-			gaTransHtml += "'tax':'"+transTax+"',";
-			gaTransHtml += "'currency':'USD'";
-			gaTransHtml += "});\n";
+			
+			// build transaction object
+			var transaction = {
+				id			: transId,
+				affiliation	: transAffiliation,
+				revenue		: transTotal,
+				shipping	: transShipping,
+				tax			: transTax,
+				currency	: 'USD'
+			}
+
+			var transactionJSON = JSON.stringify(transaction); // stringify transaction as JSON object to handle character escaping
+
+			gaTransHtml += "ga('ecommerce:addTransaction', " + transactionJSON + ");\n";
 
 			console.log(gaTransHtml); // print gaTransHtml to console to confirm data to be sent to GA
 
@@ -97,17 +103,21 @@
 			for (i = 0; i < fcProducts.length; i++) {
 				var fcProduct = fcProducts[i];
 		
-				gaItemHtml += "ga('ecommerce:addItem', {";
+				// build product object
+				var product = {
+					id			: transId,
+					name		: fcProduct.name,
+					sku			: fcProduct.code,
+					category	: fcProduct.category,
+					price		: fcProduct.price_each,
+					quantity	: fcProduct.quantity,
+					currency	: 'USD'
+				};
+
+				var productJSON = JSON.stringify(product); // stringify product as JSON object to handle character escaping
+
+				gaItemHtml += "ga('ecommerce:addItem', " + productJSON + ");\n";
 		
-				gaItemHtml += "'id':'"+transId+"',";
-				gaItemHtml += "'name':'"+fcProduct.name+"',";
-				gaItemHtml += "'sku':'"+fcProduct.code+"',";
-				gaItemHtml += "'category':'"+fcProduct.category+"',";
-				gaItemHtml += "'price':'"+fcProduct.price_each+"',";
-				gaItemHtml += "'quantity':'"+fcProduct.quantity+"',";
-				gaItemHtml += "'currency':'USD'";
-		
-				gaItemHtml += "});\n";
 			}
 	
 			console.log(gaItemHtml); // print gaItemHtml to console to confirm data to be sent to GA
