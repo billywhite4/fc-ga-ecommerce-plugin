@@ -6,7 +6,7 @@ In early versions of FoxyCart, `fc_json` does not pass data for the entire trans
 #Dependencies
 This specific example is for a FoxyCart 0.7.1 store on an FC subdomain like yourstore.foxycart.com, but it should still work on any pre-v2.0 store with light modification. Instructions may vary for custom subdomains like yourstore.yourdomain.com.
 
-A prerequisite for this to work is setting up your Google Analytics Goal Conversions based on the detailed instructions here on the FoxyCart wiki:
+A prerequisite for this to work is setting up your Google Analytics Goal Conversions and turning on the Ecommerce plugin based on the detailed instructions here on the FoxyCart wiki:
 https://wiki.foxycart.com/integration/googleanalytics_universal
 
 Those instructions obviously also require Google Analytics Universal Analytics (analytics.js).
