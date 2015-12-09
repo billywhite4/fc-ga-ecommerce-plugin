@@ -1,7 +1,7 @@
-#FoxyCart Transaction Data to Google Analytics Ecommerce Plugin
-This script mines transaction data in the FoxyCart Receipt HTML along with product data from `fc_json` to be sent to the Google Analytics Ecommerce plugin for tracking purchase details
+#Send FoxyCart Transaction Data to Google Analytics Ecommerce Plugin
+This script mines transaction data in the FoxyCart Receipt HTML along with product data from `fc_json` to be sent to the Google Analytics Ecommerce plugin for tracking purchase details.
 
-In early versions of FoxyCart, `fc_json` does not pass data for the entire transaction and only includes details on individual products in the purchase. Thus, transaction data like shipping, tax, and transaction total must be gleaned from the Receipt teamplate HTML, while product-specific data like name, price, quantity, etc. are pulled from `fc_json`. 
+In early versions of FoxyCart, `fc_json` does not pass data for the entire transaction and only includes details on individual products in the purchase. Thus, transaction data like shipping, tax, and transaction total must be gleaned from the Receipt template HTML, while product-specific data like name, price, quantity, etc. are pulled from `fc_json`. 
 
 #Dependencies
 This specific example is for a FoxyCart 0.7.1 store on an FC subdomain like yourstore.foxycart.com, but it should still work on any pre-v2.0 store with light modification. Instructions may vary for custom subdomains like yourstore.yourdomain.com.
