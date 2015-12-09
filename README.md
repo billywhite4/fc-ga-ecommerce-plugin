@@ -25,7 +25,7 @@ var transTotal = stripUSD($('.fc_order_total').find('.fc_text').html()); // tran
 ```
 
 #Notes
-*Important!* This should only be applied to the FoxyCart `/receipt` page. Adding this script to any other FoxyCart page will muck up your analytics as fc_json is present on all FC pages and passing data to the Ecommerce plugin before a purchase is completed will create a big mess in your analytics.
+**Important!** This should only be applied to the FoxyCart `/receipt` page. Adding this script to any other FoxyCart page will muck up your analytics as fc_json is present on all FC pages and passing data to the Ecommerce plugin before a purchase is completed will create a big mess in your analytics.
 
 This setup is for USD currency, but the `stripUSD()` function could be altered or extended to strip the prefixes of other currencies.
 
